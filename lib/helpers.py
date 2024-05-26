@@ -1,11 +1,9 @@
 # lib/helpers.py
 
-
-
-def helper_1():
-    print("Performing useful function#1.")
-
+from models.account import Account
+from models.transaction import Transaction
 
 def exit_program():
-    print("Goodbye!")
+    print("Exiting out... goodbye!")
     exit()
+
