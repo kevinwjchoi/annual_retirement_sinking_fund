@@ -28,7 +28,12 @@ def main_menu():
     print("3) Exit")
 
 def handle_account_menu():
-    ...
+    print("Account Menu:")
+    print("1) Create an account")
+    print("2) Update an account")
+    print("3) Delete an account")
+    print("4) Show all accounts")
+    print("5) Back to Main Menu")
 
 def handle_transaction_menu():
     ...        
