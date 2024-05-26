@@ -31,7 +31,22 @@ def handle_account_menu():
         elif choice == '4':
             ...
         elif choice == '5':
-            ...    
+            break   
+        else:
+            print("Invalid choice. Please try again.")
+
+def handle_transaction_menu():
+    while True:
+        transaction_menu()
+        choice = input("Enter your choice: ")
+        if choice == '1':
+            ...
+        elif choice == '2':
+            ...
+        elif choice == '3':
+            ...
+        elif choice == '4':
+            break
         else:
             print("Invalid choice. Please try again.")
 
@@ -50,7 +65,7 @@ def account_menu():
     print("4) Show all accounts")
     print("5) Back to Main Menu")
 
-def handle_transaction_menu():
+def transaction_menu():
     print("Transaction Menu:")
     print("1) Create transaction")  
     print("2) Update transaction")   
