@@ -1,5 +1,5 @@
 from models.__init__ import CURSOR, CONN
-from models.sinking_fund import SinkingFund
+from lib.models.account import SinkingFund
 
 class Transaction:
     pass
