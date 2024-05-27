@@ -41,3 +41,10 @@ def update_account():
     else: 
         print(f'Account {id_} not found')
 
+def delete_account():
+    id_ = input("Enter account's id: ")
+    if account := Account.find_by_id(id_): 
+        account.delete()
+        print(f'Account {id_} deleted')
+    else: 
+        print(f'Account {id_} not found')
