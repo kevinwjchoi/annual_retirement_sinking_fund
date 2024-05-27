@@ -68,4 +68,10 @@ class Account:
             self.update()
         type(self).all[self.account_id] = self
 
+    @classmethod
+    def create(cls, name, balance=0.0, taxed=False, goal=None):
+        """ Initialize a new Account instance and save the object to the database """
+        account = cls(None, name, balance, taxed, None, goal)
+        account.save()
+        return account
     
