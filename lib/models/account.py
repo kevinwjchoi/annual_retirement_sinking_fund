@@ -75,3 +75,24 @@ class Account:
         account.save()
         return account
     
+    def update(self):
+        """Update the table row corresponding to the current Account instance."""
+        sql = """
+            UPDATE accounts
+            SET name = ?, balance = ?, taxed = ?, date_created = ?, goal = ?
+            WHERE account_id = ?
+        """
+        CURSOR.execute(sql, (self.name, self.balance, self.taxed, self.date_created, self.goal, self.account_id))
+        CONN.commit()
+
+    def delete(self):
+        """Delete the table row corresponding to the current Account instance,
+        delete the dictionary entry, and reassign id attribute"""
+        sql = """
+            DELETE FROM accounts
+            WHERE account_id = ?
+        """
+        CURSOR.execute(sql, (self.account_id,))
+        CONN.commit()
+        del type(self).all[self.account_id]
+        self.account_id = None
