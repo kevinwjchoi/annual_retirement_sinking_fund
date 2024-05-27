@@ -22,3 +22,22 @@ def create_account():
         print(f'Created {account.name} account')
     except Exception as exc:
         print("Error creating account: ", exc)
+
+def update_account(): 
+    id_ = input("Enter the account's id: ")
+    if account := Account.find_by_id(id_):
+        try: 
+            name = input("Enter new account name: ")
+            account.name = name 
+            taxed = input("Is it taxed?\n 0) No or 1) Yes: ")
+            account.taxed = taxed 
+            goal = input("Enter new account goal: ")
+            account.goal = goal 
+
+            account.update()
+            print(f'{account} has been updated')
+        except Exception as exc:
+            print("Error updating account: ", exc)
+    else: 
+        print(f'Account {id_} not found')
+
