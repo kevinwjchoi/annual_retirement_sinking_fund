@@ -53,3 +53,19 @@ class Account:
         """
         CURSOR.execute(sql)
         CONN.commit()
+
+    def save(self):
+        """ Insert a new row with the account attributes or update if it exists """
+        if self.account_id is None:
+            sql = """
+                INSERT INTO accounts (name, balance, taxed, date_created, goal)
+                VALUES (?, ?, ?, ?, ?)
+            """
+            CURSOR.execute(sql, (self.name, self.balance, self.taxed, self.date_created, self.goal))
+            CONN.commit()
+            self.account_id = CURSOR.lastrowid
+        else:
+            self.update()
+        type(self).all[self.account_id] = self
+
+    
