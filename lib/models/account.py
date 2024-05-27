@@ -14,7 +14,13 @@ class Account:
         return (f"Account({self.account_id}, {self.name}, {self.balance}, {self.taxed}, "
                 f"{self.date_created}, {self.goal})")
 
+    @property
+    def account_id(self):
+        return self._account_id
 
+    @account_id.setter
+    def account_id(self, value):
+        self._account_id = value
     
     @property
     def name(self):
@@ -28,6 +34,46 @@ class Account:
             raise ValueError(
                 "Name must be a non-empty string"
             )
+
+    @property
+    def balance(self):
+        return self._balance
+
+    @balance.setter
+    def balance(self, value):
+        if value < 0:
+            raise ValueError("Balance cannot be negative")
+        self._balance = value
+
+    @property
+    def taxed(self):
+        return self._taxed
+
+    @taxed.setter
+    def taxed(self, value):
+        if value not in [0, 1, True, False]:
+            raise ValueError("Taxed must be 0 (False) or 1 (True)")
+        self._taxed = bool(value)
+
+    @property
+    def date_created(self):
+        return self._date_created
+
+    @date_created.setter
+    def date_created(self, value):
+        self._date_created = value
+
+    @property
+    def goal(self):
+        return self._goal
+
+    @goal.setter
+    def goal(self, value):
+        if value is not None and value < 0:
+            raise ValueError("Goal cannot be negative")
+        self._goal = value
+
+        
 
     @classmethod
     def create_table(cls):
@@ -96,3 +142,20 @@ class Account:
         CONN.commit()
         del type(self).all[self.account_id]
         self.account_id = None
+    
+
+    @classmethod
+    def instance_from_db(cls, row):
+        """Return an Account object having the attribute values from the table row."""
+        account = cls.all.get(row[0])
+        if account:
+            account.name = row[1]
+            account.balance = row[2]
+            account.taxed = bool(row[3])
+            account.date_created = row[4]
+            account.goal = row[5]
+        else:
+            account = cls(row[0], row[1], row[2], bool(row[3]), row[4], row[5])
+            cls.all[account.account_id] = account
+        return account
+    
