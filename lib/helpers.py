@@ -1,11 +1,12 @@
 # lib/helpers.py
 
 from models.account import Account
-from models.transaction import Transaction
-from datetime import datetime
+# from models.transaction import Transaction
+# from datetime import datetime
 
 def create_account():
     name = input("Enter name of the investment: ")
+    balance = 0.0
     taxed = None
     goal = None
     while taxed not in [0, 1]:
@@ -18,7 +19,7 @@ def create_account():
         except ValueError:
             print("Invalid input. Please enter a valid integer for the goal amount.")
     try:
-        account = Account.create(name, taxed, goal)
+        account = Account.create(name, balance, taxed, goal)
         print(f'Created {account.name} account')
     except Exception as exc:
         print("Error creating account: ", exc)
@@ -48,3 +49,8 @@ def delete_account():
         print(f'Account {id_} deleted')
     else: 
         print(f'Account {id_} not found')
+
+def list_accounts():
+    accounts = Account.get_all()
+    for account in accounts:
+        print(account)

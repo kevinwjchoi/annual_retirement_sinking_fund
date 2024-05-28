@@ -2,6 +2,8 @@ from models.__init__ import CURSOR, CONN
 from datetime import datetime
 
 class Account:
+    all ={}
+    
     def __init__(self, account_id, name, balance=0.0, taxed=False, date_created=None, goal=None):
         self.account_id = account_id
         self.name = name
@@ -28,7 +30,7 @@ class Account:
 
     @name.setter
     def name(self, name):
-        if isinstance(name, str) and len(name):
+        if isinstance(name, str):
             self._name = name
         else:
             raise ValueError(
@@ -73,7 +75,7 @@ class Account:
             raise ValueError("Goal cannot be negative")
         self._goal = value
 
-        
+
 
     @classmethod
     def create_table(cls):
@@ -159,3 +161,39 @@ class Account:
             cls.all[account.account_id] = account
         return account
     
+    @classmethod
+    def get_all(cls):
+        """Return a list containing a Department object per row in the table"""
+        sql = """
+            SELECT *
+            FROM accounts
+        """
+
+        rows = CURSOR.execute(sql).fetchall()
+
+        return [cls.instance_from_db(row) for row in rows]
+
+    @classmethod
+    def find_by_id(cls, id):
+        """Return a Account object corresponding to the table row matching the specified primary key"""
+        sql = """
+            SELECT *
+            FROM accounts
+            WHERE id = ?
+        """
+
+        row = CURSOR.execute(sql, (id,)).fetchone()
+        return cls.instance_from_db(row) if row else None
+    
+    @classmethod
+    def find_by_name(cls, name):
+        """Return a Account object corresponding to first table row matching specified name"""
+        sql = """
+            SELECT *
+            FROM accounts
+            WHERE name is ?
+        """
+
+        row = CURSOR.execute(sql, (name,)).fetchone()
+        return cls.instance_from_db(row) if row else None
+

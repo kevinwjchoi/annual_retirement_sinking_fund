@@ -1,7 +1,10 @@
 # lib/cli.py
 
 from helpers import (
-    create_account
+    create_account,
+    update_account,
+    delete_account,
+    list_accounts
 )
 
 def main():
@@ -25,11 +28,11 @@ def handle_account_menu():
         if choice == '1':
             create_account()
         elif choice == '2':
-            ...
+            update_account()
         elif choice == '3':
-            ...
+            delete_account()
         elif choice == '4':
-            ...
+            list_accounts()
         elif choice == '5':
             break   
         else:
