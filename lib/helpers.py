@@ -30,9 +30,9 @@ def update_account():
         try: 
             name = input("Enter new account name: ")
             account.name = name 
-            taxed = input("Is it taxed?\n 0) No or 1) Yes: ")
+            taxed = int(input("Is it taxed?\n 0) No or 1) Yes: "))
             account.taxed = taxed 
-            goal = input("Enter new account goal: ")
+            goal = int(input("Enter new account goal: "))
             account.goal = goal 
 
             account.update()
@@ -54,3 +54,5 @@ def list_accounts():
     accounts = Account.get_all()
     for account in accounts:
         print(account)
+
+        

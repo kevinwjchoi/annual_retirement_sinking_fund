@@ -12,9 +12,9 @@ class Account:
         self.date_created = date_created if date_created else datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.goal = goal
 
-    def __repr__(self):
-        return (f"Account({self.account_id}, {self.name}, {self.balance}, {self.taxed}, "
-                f"{self.date_created}, {self.goal})")
+    # def __repr__(self):
+    #     return (f"Account({self.account_id}, {self.name}, {self.balance}, {self.taxed}, "
+    #             f"{self.date_created}, {self.goal})")
 
     @property
     def account_id(self):
@@ -55,7 +55,7 @@ class Account:
     def taxed(self, taxed):
         if taxed not in [0, 1]:
             raise ValueError("Taxed must be 0 (False) or 1 (True)")
-        self._taxed = bool(taxed)
+        self._taxed = int(taxed)
 
     @property
     def date_created(self):
@@ -75,7 +75,7 @@ class Account:
             raise ValueError("Goal cannot be negative")
         self._goal = goal
 
-        
+
 
     @classmethod
     def create_table(cls):
@@ -197,3 +197,16 @@ class Account:
         row = CURSOR.execute(sql, (name,)).fetchone()
         return cls.instance_from_db(row) if row else None
 
+    def transactions(self):
+        """Return list of transaction of the department"""
+        from models.transaction import Transaction
+        sql = """
+            SELECT * FROM transactions
+            WHERE account_id = ?
+        """
+        CURSOR.execute(sql, (self.id),)
+
+        rows = CURSOR.fetchall()
+        return[
+            Transaction.instance_from_db(row) for row in rows
+        ]
