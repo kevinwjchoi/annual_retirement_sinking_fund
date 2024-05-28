@@ -25,8 +25,8 @@ def create_account():
         print("Error creating account: ", exc)
 
 def update_account(): 
-    id_ = input("Enter the account's id: ")
-    if account := Account.find_by_id(id_):
+    name = input("Enter the account's name: ")
+    if account := Account.find_by_name(name):
         try: 
             name = input("Enter new account name: ")
             account.name = name 
@@ -40,15 +40,15 @@ def update_account():
         except Exception as exc:
             print("Error updating account: ", exc)
     else: 
-        print(f'Account {id_} not found')
+        print(f'Account {name} not found')
 
 def delete_account():
-    id_ = input("Enter account's id: ")
-    if account := Account.find_by_id(id_): 
+    name = input("Enter account's name: ")
+    if account := Account.find_by_name(name): 
         account.delete()
-        print(f'Account {id_} deleted')
+        print(f'Account {name} deleted')
     else: 
-        print(f'Account {id_} not found')
+        print(f'Account {name} not found')
 
 def list_accounts():
     accounts = Account.get_all()

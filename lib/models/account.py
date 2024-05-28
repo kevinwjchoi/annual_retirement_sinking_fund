@@ -42,40 +42,40 @@ class Account:
         return self._balance
 
     @balance.setter
-    def balance(self, value):
-        if value < 0:
+    def balance(self, balance):
+        if balance < 0:
             raise ValueError("Balance cannot be negative")
-        self._balance = value
+        self._balance = balance
 
     @property
     def taxed(self):
         return self._taxed
 
     @taxed.setter
-    def taxed(self, value):
-        if value not in [0, 1, True, False]:
+    def taxed(self, taxed):
+        if taxed not in [0, 1]:
             raise ValueError("Taxed must be 0 (False) or 1 (True)")
-        self._taxed = bool(value)
+        self._taxed = bool(taxed)
 
     @property
     def date_created(self):
         return self._date_created
 
     @date_created.setter
-    def date_created(self, value):
-        self._date_created = value
+    def date_created(self, date_created):
+        self._date_created = date_created
 
     @property
     def goal(self):
         return self._goal
 
     @goal.setter
-    def goal(self, value):
-        if value is not None and value < 0:
+    def goal(self, goal):
+        if goal is not None and goal < 0:
             raise ValueError("Goal cannot be negative")
-        self._goal = value
+        self._goal = goal
 
-
+        
 
     @classmethod
     def create_table(cls):
