@@ -4,8 +4,8 @@ from datetime import datetime
 class Account:
     all ={}
     
-    def __init__(self, account_id, name, balance=0.0, taxed=False, date_created=None, goal=None):
-        self.account_id = account_id
+    def __init__(self, id, name, balance=0.0, taxed=False, date_created=None, goal=None):
+        self.id = id
         self.name = name
         self.balance = balance
         self.taxed = taxed
@@ -13,16 +13,16 @@ class Account:
         self.goal = goal
 
     # def __repr__(self):
-    #     return (f"Account({self.account_id}, {self.name}, {self.balance}, {self.taxed}, "
+    #     return (f"Account({self.id}, {self.name}, {self.balance}, {self.taxed}, "
     #             f"{self.date_created}, {self.goal})")
 
     @property
-    def account_id(self):
-        return self._account_id
+    def id(self):
+        return self._id
 
-    @account_id.setter
-    def account_id(self, account_id):
-        self._account_id = account_id
+    @id.setter
+    def id(self, id):
+        self._id = id
     
     @property
     def name(self):
@@ -82,7 +82,7 @@ class Account:
         """ Create a new table to persist the attributes of Account instances """
         sql = """
             CREATE TABLE IF NOT EXISTS accounts (
-            account_id INTEGER PRIMARY KEY,
+            id INTEGER PRIMARY KEY,
             name TEXT,
             balance REAL,
             taxed INTEGER,
@@ -104,17 +104,17 @@ class Account:
 
     def save(self):
         """ Insert a new row with the account attributes or update if it exists """
-        if self.account_id is None:
+        if self.id is None:
             sql = """
                 INSERT INTO accounts (name, balance, taxed, date_created, goal)
                 VALUES (?, ?, ?, ?, ?)
             """
             CURSOR.execute(sql, (self.name, self.balance, self.taxed, self.date_created, self.goal))
             CONN.commit()
-            self.account_id = CURSOR.lastrowid
+            self.id = CURSOR.lastrowid
         else:
             self.update()
-        type(self).all[self.account_id] = self
+        type(self).all[self.id] = self
 
     @classmethod
     def create(cls, name, balance=0.0, taxed=False, goal=None):
@@ -128,9 +128,9 @@ class Account:
         sql = """
             UPDATE accounts
             SET name = ?, balance = ?, taxed = ?, date_created = ?, goal = ?
-            WHERE account_id = ?
+            WHERE id = ?
         """
-        CURSOR.execute(sql, (self.name, self.balance, self.taxed, self.date_created, self.goal, self.account_id))
+        CURSOR.execute(sql, (self.name, self.balance, self.taxed, self.date_created, self.goal, self.id))
         CONN.commit()
 
     def delete(self):
@@ -138,12 +138,12 @@ class Account:
         delete the dictionary entry, and reassign id attribute"""
         sql = """
             DELETE FROM accounts
-            WHERE account_id = ?
+            WHERE id = ?
         """
-        CURSOR.execute(sql, (self.account_id,))
+        CURSOR.execute(sql, (self.id,))
         CONN.commit()
-        del type(self).all[self.account_id]
-        self.account_id = None
+        del type(self).all[self.id]
+        self.id = None
     
 
     @classmethod
@@ -158,7 +158,7 @@ class Account:
             account.goal = row[5]
         else:
             account = cls(row[0], row[1], row[2], bool(row[3]), row[4], row[5])
-            cls.all[account.account_id] = account
+            cls.all[account.id] = account
         return account
     
     @classmethod
@@ -202,7 +202,7 @@ class Account:
         from models.transaction import Transaction
         sql = """
             SELECT * FROM transactions
-            WHERE account_id = ?
+            WHERE id = ?
         """
         CURSOR.execute(sql, (self.id),)
 
