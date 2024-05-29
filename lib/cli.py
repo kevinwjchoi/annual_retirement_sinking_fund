@@ -14,7 +14,7 @@ def main():
         if choice == '1':
             handle_account_menu()
         elif choice == '2':
-            handle_transaction_menu()
+            ...
         elif choice == '3':
             print("Goodbye!")
             break
@@ -54,10 +54,11 @@ def handle_transaction_menu():
             print("Invalid choice. Please try again.")
 
 def main_menu():
+    print("\n")
     print("Welcome to the Investment Contribution Tracker CLI!")
     print("What would you like to do?")
     print("1) Look at your account(s)?")
-    print("2) Look at your transaction(s)?")
+    print("2) Look at examples of different types of accounts?")
     print("3) Exit")
 
 def account_menu():
