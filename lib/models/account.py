@@ -163,7 +163,7 @@ class Account:
     
     @classmethod
     def get_all(cls):
-        """Return a list containing a Department object per row in the table"""
+        """Return a list containing a Account object per row in the table"""
         sql = """
             SELECT *
             FROM accounts
