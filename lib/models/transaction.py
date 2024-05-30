@@ -81,7 +81,7 @@ class Transaction:
             amount REAL,
             transaction_type TEXT,
             timestamp TEXT,
-            account_id INTEGER FOREIGN KEY
+            account_id INTEGER
             )
         """
         CURSOR.execute(sql)

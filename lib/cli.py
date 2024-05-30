@@ -4,7 +4,8 @@ from helpers import (
     create_account,
     update_account,
     delete_account,
-    list_accounts
+    list_accounts,
+    search_account
 )
 
 def main():
@@ -26,15 +27,18 @@ def handle_account_menu():
         account_menu()
         choice = input("Enter your choice: ")
         if choice == '1':
-            create_account()
-        elif choice == '2':
-            update_account()
-        elif choice == '3':
-            delete_account()
-        elif choice == '4':
             list_accounts()
+        elif choice == '2':
+            search_account()
+            handle_transaction_menu()
+        elif choice == '3':
+            create_account()
+        elif choice == '4':
+            update_account()
         elif choice == '5':
-            break   
+            delete_account()
+        elif choice == '6':
+            break
         else:
             print("Invalid choice. Please try again.")
 
@@ -63,14 +67,15 @@ def main_menu():
 
 def account_menu():
     print("Account Menu:")
-    print("1) Create an account")
-    print("2) Update an account")
-    print("3) Delete an account")
-    print("4) Show all accounts")
-    print("5) Back to Main Menu")
+    print("1) Show all accounts")
+    print("2) Select account by name search")
+    print("3) Create an account")
+    print("4) Update an account")
+    print("5) Delete an account")
+    print("6) Back to Main Menu")
 
 def transaction_menu():
-    print("Transaction Menu:")
+    print("What would you like to do?")
     print("1) Create transaction")  
     print("2) Update transaction")   
     print("3) Delete transaction")   

@@ -175,7 +175,7 @@ class Account:
 
     @classmethod
     def find_by_id(cls, id):
-        """Return a Account object corresponding to the table row matching the specified primary key"""
+        """Return an Account object corresponding to the table row matching the specified primary key"""
         sql = """
             SELECT *
             FROM accounts
@@ -187,15 +187,21 @@ class Account:
     
     @classmethod
     def find_by_name(cls, name):
-        """Return a Account object corresponding to first table row matching specified name"""
+        """Return an Account object corresponding to first table row matching specified name"""
         sql = """
-            SELECT *
+            SELECT id, name
             FROM accounts
             WHERE name is ?
         """
 
-        row = CURSOR.execute(sql, (name,)).fetchone()
-        return cls.instance_from_db(row) if row else None
+        CURSOR.execute(sql, (name,))
+        result = CURSOR.fetchone()
+        if result:
+            id, name = result
+            return Account(id, name) 
+        else:
+            return None
+
 
     def transactions(self):
         """Return list of transaction of the department"""

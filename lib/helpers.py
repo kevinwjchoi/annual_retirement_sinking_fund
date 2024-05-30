@@ -1,9 +1,11 @@
 # lib/helpers.py
 
 from models.account import Account
-# from models.transaction import Transaction
+from models.transaction import Transaction
 # from datetime import datetime
 
+
+#Helpers for accounts tables
 def create_account():
     name = input("Enter name of the investment: ")
     balance = 0.0
@@ -52,7 +54,35 @@ def delete_account():
 
 def list_accounts():
     accounts = Account.get_all()
+    print('\n')
+    print('List of accounts:')
     for account in accounts:
-        print(account)
+        print(f'Name: ' + account.name)
+    print('\n')
 
-        
+def search_account():
+    name = input("enter account's name: ")
+    if account := Account.find_by_name(name): 
+        print('\n')
+        print(f'Name:  {account.name}')
+        print(f'Balance: {account.balance}')
+        print(f'Goal: {account.goal}')
+        print('\n')
+
+
+#Helpers for transactions tables 
+
+def create_transaction():
+    name = input("Enter transaction name: ")
+    amount = input("Enter transaction amount: ")
+    valid_inputs = ["deposit", "withdrawal"]
+    transaction_type = input("Is this a deposit or withdrawal?")
+    while transaction_type.lower() not in valid_inputs:
+        print("Invalid input, please enter either 'deposit' or 'withdrawal'.")
+        transaction_type = input("Is this a deposit or withdrawal? ")
+    try:
+        transaction = Transaction.create(name, amount, transaction_type)
+        print(f'Created {transaction.name} transaction')
+    except Exception as exc:
+        print("Error creating transaction: ", exc)
+    
