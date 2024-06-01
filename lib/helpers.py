@@ -99,18 +99,35 @@ def create_transaction(account):
     
 def update_transaction(account):
     note = input("Enter transaction description note: ")
-    amount = input("Enter transaction amount: ")
-    valid_inputs = ["deposit", "withdrawal"]
-    action = input("Is this a deposit or withdrawal? ")
-    account_id = account.id
-    while action.lower() not in valid_inputs:
-        print("Invalid input, please enter either 'deposit' or 'withdrawal'.")
-        action = input("Is this a deposit or withdrawal? ")
-    try:
-        transaction = Transaction.update(note, amount, action, account_id)
-        print(f'You made a {transaction.action} of ${transaction.amount}.')
-    except Exception as exc:
-        print("Error updating transaction: ", exc)
+    transaction = Transaction.find_by_note(note)
+    if transaction:
+        try:
+            note = input("Enter new transaction description note: ")
+            amount = input("Enter transaction amount: ")
+            valid_inputs = ["deposit", "withdrawal"]
+            action = input("Is this a deposit or a withdrawal? ").lower()
+
+            while action not in valid_inputs:
+                print("Invalid input, please enter either 'deposit' or 'withdrawal'.")
+                action = input("Is this a deposit or withdrawal? ")
+            
+            transaction.note = note
+            transaction.amount = amount 
+            transaction.action = action
+            transaction.account_id = account.id
+            transaction.timestamp = datetime.now().isoformat()
+            transaction.update()
+            
+            print(f'You made a {transaction.action} of ${transaction.amount}.')
+        
+        except ValueError:
+            print("Error: Amount must be a number.")
+        
+        except Exception as exc:
+            print("Error updating transaction: ", exc)
+    else:
+        print("Transaction not found.")
+    
     
 def show_all_transactions(account):
     ...
