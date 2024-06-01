@@ -7,7 +7,8 @@ from helpers import (
     list_accounts,
     search_account,
     create_transaction,
-    update_transaction
+    update_transaction,
+    show_all_transactions
 )
 
 def main():
@@ -48,12 +49,14 @@ def handle_transaction_menu(account):
         transaction_menu()
         choice = input("Enter your choice: ")
         if choice == '1':
-            create_transaction(account)
+            show_all_transactions(account)
         elif choice == '2':
-            update_transaction(account)
+            create_transaction(account)
         elif choice == '3':
-            ...
+            update_transaction(account)
         elif choice == '4':
+            ...
+        elif choice == '5':
             break
         else:
             print("Invalid choice. Please try again.")
@@ -79,10 +82,11 @@ def account_menu():
 def transaction_menu():
     print("\n")
     print("What would you like to do?")
-    print("1) Create transaction")  
-    print("2) Update transaction")   
-    print("3) Delete transaction")   
-    print("4) Back to Account Menu")   
+    print("1) See all transactions")
+    print("2) Create transaction")  
+    print("3) Update transaction")   
+    print("4) Delete transaction")   
+    print("5) Back to Account Menu")   
 
 
 if __name__ == "__main__":

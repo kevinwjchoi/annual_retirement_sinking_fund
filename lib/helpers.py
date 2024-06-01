@@ -111,3 +111,6 @@ def update_transaction(account):
         print(f'You made a {transaction.action} of ${transaction.amount}.')
     except Exception as exc:
         print("Error updating transaction: ", exc)
+    
+def show_all_transactions(account):
+    ...

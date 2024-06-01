@@ -158,7 +158,7 @@ class Transaction:
         else:
             transaction = cls(row[0], row[1], row[2], row[3], row[4], row[5])
             cls.all[transaction.id] = transaction
-        return transacti
+        return transaction
     
     @classmethod
     def get_all(cls):
