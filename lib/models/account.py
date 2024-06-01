@@ -4,7 +4,7 @@ from datetime import datetime
 class Account:
     all ={}
     
-    def __init__(self, id, name, balance=0.0, taxed=False, date_created=None, goal=None):
+    def __init__(self, id, name, balance=0.0, taxed=False, date_created=None, goal=0):
         self.id = id
         self.name = name
         self.balance = balance
@@ -117,7 +117,7 @@ class Account:
         type(self).all[self.id] = self
 
     @classmethod
-    def create(cls, name, balance=0.0, taxed=False, goal=None):
+    def create(cls, name, balance=0.0, taxed=False, goal=0):
         """ Initialize a new Account instance and save the object to the database """
         account = cls(None, name, balance, taxed, None, goal)
         account.save()
@@ -127,10 +127,10 @@ class Account:
         """Update the table row corresponding to the current Account instance."""
         sql = """
             UPDATE accounts
-            SET name = ?, balance = ?, taxed = ?, date_created = ?, goal = ?
+            SET name = ?, taxed = ?,  goal = ?
             WHERE id = ?
         """
-        CURSOR.execute(sql, (self.name, self.balance, self.taxed, self.date_created, self.goal, self.id))
+        CURSOR.execute(sql, (self.name, self.taxed,  self.goal, self.id))
         CONN.commit()
 
     def delete(self):
@@ -189,7 +189,7 @@ class Account:
     def find_by_name(cls, name):
         """Return an Account object corresponding to first table row matching specified name"""
         sql = """
-            SELECT id, name
+            SELECT id, name, balance, taxed, date_created, goal
             FROM accounts
             WHERE name is ?
         """
@@ -197,8 +197,9 @@ class Account:
         CURSOR.execute(sql, (name,))
         result = CURSOR.fetchone()
         if result:
-            id, name = result
-            return Account(id, name) 
+            id, name, balance, taxed, date_created, goal = result
+            return Account(id, name, balance, taxed, date_created ,goal)
+
         else:
             return None
 

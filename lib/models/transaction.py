@@ -1,31 +1,33 @@
 from models.__init__ import CURSOR, CONN
-from lib.models.account import Account
+from datetime import datetime
 
 class Transaction:
+    all ={}
     
-    def __init__(self, id, name, amount, transaction_type, timestamp, account_id):
+    def __init__(self, id, note, amount, action, timestamp, account_id):
         self.id = id
-        self.name = name
+        self.note = note
         self.amount = amount
-        self.transaction_type = transaction_type
-        self.timestamp = timestamp
+        self.action = action
+        self.timestamp = timestamp or datetime.now().isoformat()
         self.account_id = account_id
 
     # def __repr__(self):
-    #     return (f"Transaction({self.transaction_id}, {self.amount}, "
-    #             f"{self.transaction_type}, {self.timestamp}) , {self.account_id}")
+    #     return (f"Transaction({self.transaction_id}, {self.a
+    # mount}, "
+    #             f"{self.action}, {self.timestamp}) , {self.account_id}")
     
     @property
-    def name(self):
-        return self._name
+    def note(self):
+        return self._note
     
-    @name.setter
-    def name(self, name):
-        if isinstance(name, str) and len(name):
-            self._name = name 
+    @note.setter
+    def note(self, note):
+        if isinstance(note, str) and len(note):
+            self._note = note 
         else: 
             raise ValueError(
-                "Name must be a non-empty string"
+                "note must be a non-empty string"
             )
 
     @property
@@ -34,21 +36,22 @@ class Transaction:
     
     @amount.setter
     def amount(self, amount):
-        if isinstance(amount, float):
-            self._amount = amount
-        else:
-            raise ValueError(
-                "Amount must be a float"
-            )
+        self._amount = amount
+        # if isinstance(amount, int):
+        #     self._amount = amount
+        # else:
+        #     raise ValueError(
+        #         "Amount must be a whole integer"
+        #     )
 
     @property
-    def transaction_type(self):
-        return self._transaction_type
+    def action(self):
+        return self._action
     
-    @transaction_type.setter
-    def transaction_type(self, transaction_type):
-        if isinstance(transaction_type, str):
-            self._transaction_type = transaction_type
+    @action.setter
+    def action(self, action):
+        if isinstance(action, str):
+            self._action = action
         else:
             raise ValueError(
                 "Transaction type must be a non-empty string"
@@ -60,7 +63,10 @@ class Transaction:
     
     @timestamp.setter
     def timestamp(self, timestamp):
-        self._timestamp = timestamp
+        if isinstance(timestamp, str):
+            self._timestamp = timestamp
+        else:
+            raise ValueError("Timestamp must be a string")
     
     @property
     def account_id(self):
@@ -77,9 +83,9 @@ class Transaction:
         sql = """
             CREATE TABLE IF NOT EXISTS transactions (
             id INTEGER PRIMARY KEY,
-            name TEXT,
+            note TEXT,
             amount REAL,
-            transaction_type TEXT,
+            action TEXT,
             timestamp TEXT,
             account_id INTEGER
             )
@@ -100,10 +106,10 @@ class Transaction:
         """ Insert a new row with the transaction attributes or update if it exists """
         if self.id is None:
             sql = """
-                INSERT INTO transactions (name, amount, transaction_type, timestamp, account_id)
+                INSERT INTO transactions (note, amount, action, timestamp, account_id)
                 VALUES (?, ?, ?, ?, ?)
             """
-            CURSOR.execute(sql, (self.name, self.amount, self.transaction_type, self.timestamp, self.account_id))
+            CURSOR.execute(sql, (self.note, self.amount, self.action, self.timestamp, self.account_id))
             CONN.commit()
             self.id = CURSOR.lastrowid
         else:
@@ -111,20 +117,20 @@ class Transaction:
         type(self).all[self.id] = self
 
     @classmethod
-    def create(cls, name, amount, transaction_type):
-        """ Initialize a new Account instance and save the object to the database """
-        account = cls(None, name, amount, transaction_type, None, None)
-        account.save()
-        return account
+    def create(cls, note, amount, action, account_id):
+        """ Initialize a new Transaction instance and save the object to the database """
+        transaction = cls(None, note, amount, action, None, account_id)
+        transaction.save()
+        return transaction
 
     def update(self):
-        """Update the table row corresponding to the current Account instance."""
+        """Update the table row corresponding to the current Transaction instance."""
         sql = """
             UPDATE transactions
-            SET name = ?, amount = ?, transaction_type = ?, timestamp = ?, account_id = ?
+            SET note = ?, amount = ?, action = ?, timestamp = ?, account_id = ?
             WHERE id = ?
         """
-        CURSOR.execute(sql, (self.name, self.amount, self.transaction_type, self.timestamp, self.account_id, self.id))
+        CURSOR.execute(sql, (self.note, self.amount, self.action, self.timestamp, self.account_id, self.id))
         CONN.commit()
 
     def delete(self):
@@ -144,15 +150,15 @@ class Transaction:
         """Return an Transaction object having the attribute values from the table row."""
         transaction = cls.all.get(row[0])
         if transaction:
-            transaction.name = row[1]
+            transaction.note = row[1]
             transaction.amount = row[2]
-            transaction.transaction_type = row[3]
+            transaction.action = row[3]
             transaction.timestamp = row[4]
             transaction.account_id = row[5]
         else:
             transaction = cls(row[0], row[1], row[2], row[3], row[4], row[5])
             cls.all[transaction.id] = transaction
-        return transaction
+        return transacti
     
     @classmethod
     def get_all(cls):
@@ -179,13 +185,13 @@ class Transaction:
         return cls.instance_from_db(row) if row else None
     
     @classmethod
-    def find_by_name(cls, name):
-        """Return a Transaction object corresponding to first table row matching specified name"""
+    def find_by_note(cls, note):
+        """Return a Transaction object corresponding to first table row matching specified note"""
         sql = """
             SELECT *
             FROM transactions
-            WHERE name is ?
+            WHERE note is ?
         """
 
-        row = CURSOR.execute(sql, (name,)).fetchone()
+        row = CURSOR.execute(sql, (note,)).fetchone()
         return cls.instance_from_db(row) if row else None

@@ -5,7 +5,9 @@ from helpers import (
     update_account,
     delete_account,
     list_accounts,
-    search_account
+    search_account,
+    create_transaction,
+    update_transaction
 )
 
 def main():
@@ -30,7 +32,6 @@ def handle_account_menu():
             list_accounts()
         elif choice == '2':
             search_account()
-            handle_transaction_menu()
         elif choice == '3':
             create_account()
         elif choice == '4':
@@ -42,14 +43,14 @@ def handle_account_menu():
         else:
             print("Invalid choice. Please try again.")
 
-def handle_transaction_menu():
+def handle_transaction_menu(account):
     while True:
         transaction_menu()
         choice = input("Enter your choice: ")
         if choice == '1':
-            ...
+            create_transaction(account)
         elif choice == '2':
-            ...
+            update_transaction(account)
         elif choice == '3':
             ...
         elif choice == '4':
@@ -66,6 +67,7 @@ def main_menu():
     print("3) Exit")
 
 def account_menu():
+    print("\n")
     print("Account Menu:")
     print("1) Show all accounts")
     print("2) Select account by name search")
@@ -75,11 +77,12 @@ def account_menu():
     print("6) Back to Main Menu")
 
 def transaction_menu():
+    print("\n")
     print("What would you like to do?")
     print("1) Create transaction")  
     print("2) Update transaction")   
     print("3) Delete transaction")   
-    print("4) Back to Main Menu")   
+    print("4) Back to Account Menu")   
 
 
 if __name__ == "__main__":

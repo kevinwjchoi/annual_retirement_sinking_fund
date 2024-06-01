@@ -2,7 +2,8 @@
 
 from models.account import Account
 from models.transaction import Transaction
-# from datetime import datetime
+from datetime import datetime
+
 
 
 #Helpers for accounts tables
@@ -36,9 +37,8 @@ def update_account():
             account.taxed = taxed 
             goal = int(input("Enter new account goal: "))
             account.goal = goal 
-
             account.update()
-            print(f'{account} has been updated')
+            print(f'{account.name} has been updated')
         except Exception as exc:
             print("Error updating account: ", exc)
     else: 
@@ -61,28 +61,53 @@ def list_accounts():
     print('\n')
 
 def search_account():
+    from cli import handle_transaction_menu
     name = input("enter account's name: ")
-    if account := Account.find_by_name(name): 
+    account = Account.find_by_name(name)
+
+    if account:
         print('\n')
-        print(f'Name:  {account.name}')
+        print(f'Name: {account.name}')
         print(f'Balance: {account.balance}')
+        print(f'Taxed: {account.taxed}')
         print(f'Goal: {account.goal}')
         print('\n')
+        handle_transaction_menu(account)
+    else:
+        print("This failed")
+        
 
 
 #Helpers for transactions tables 
 
-def create_transaction():
-    name = input("Enter transaction name: ")
+
+def create_transaction(account):
+    note = input("Enter transaction description note: ")
     amount = input("Enter transaction amount: ")
     valid_inputs = ["deposit", "withdrawal"]
-    transaction_type = input("Is this a deposit or withdrawal?")
-    while transaction_type.lower() not in valid_inputs:
+    action = input("Is this a deposit or withdrawal? ")
+    account_id = account.id
+    timestamp = None
+    while action.lower() not in valid_inputs:
         print("Invalid input, please enter either 'deposit' or 'withdrawal'.")
-        transaction_type = input("Is this a deposit or withdrawal? ")
+        action = input("Is this a deposit or withdrawal? ")
     try:
-        transaction = Transaction.create(name, amount, transaction_type)
-        print(f'Created {transaction.name} transaction')
+        transaction = Transaction.create(note, amount, action, account_id)
+        print(f'You made a {transaction.action} of ${transaction.amount}.')
     except Exception as exc:
         print("Error creating transaction: ", exc)
     
+def update_transaction(account):
+    note = input("Enter transaction description note: ")
+    amount = input("Enter transaction amount: ")
+    valid_inputs = ["deposit", "withdrawal"]
+    action = input("Is this a deposit or withdrawal? ")
+    account_id = account.id
+    while action.lower() not in valid_inputs:
+        print("Invalid input, please enter either 'deposit' or 'withdrawal'.")
+        action = input("Is this a deposit or withdrawal? ")
+    try:
+        transaction = Transaction.update(note, amount, action, account_id)
+        print(f'You made a {transaction.action} of ${transaction.amount}.')
+    except Exception as exc:
+        print("Error updating transaction: ", exc)
