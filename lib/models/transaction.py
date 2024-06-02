@@ -1,5 +1,6 @@
 from models.__init__ import CURSOR, CONN
 from datetime import datetime
+from models.account import Account
 
 class Transaction:
     all ={}
@@ -115,6 +116,8 @@ class Transaction:
         else:
             self.update()
         type(self).all[self.id] = self
+        self.update_account_balance()
+
 
     @classmethod
     def create(cls, note, amount, action, account_id):
@@ -132,6 +135,8 @@ class Transaction:
         """
         CURSOR.execute(sql, (self.note, self.amount, self.action, self.timestamp, self.account_id, self.id))
         CONN.commit()
+        self.update_account_balance()
+
 
     def delete(self):
         """Delete the table row corresponding to the current Transaction instance,
@@ -144,6 +149,8 @@ class Transaction:
         CONN.commit()
         del type(self).all[self.id]
         self.id = None
+        self.update_account_balance()
+
 
     @classmethod
     def instance_from_db(cls, row):
@@ -195,3 +202,8 @@ class Transaction:
 
         row = CURSOR.execute(sql, (note,)).fetchone()
         return cls.instance_from_db(row) if row else None
+    
+    def update_account_balance(self):
+        account = Account.find_by_id(self.account_id)
+        if account:
+            calculate_and_update_balance(account)

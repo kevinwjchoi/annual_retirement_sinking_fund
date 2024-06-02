@@ -75,7 +75,15 @@ class Account:
             raise ValueError("Goal cannot be negative")
         self._goal = goal
 
-
+    def update_balance(self, new_balance):
+        self.balance = new_balance
+        sql = """
+            UPDATE accounts
+            SET balance = ?
+            WHERE id = ?
+        """
+        CURSOR.execute(sql, (new_balance, self.id))
+        CONN.commit()
 
     @classmethod
     def create_table(cls):
@@ -116,6 +124,7 @@ class Account:
             self.update()
         type(self).all[self.id] = self
 
+
     @classmethod
     def create(cls, name, balance=0.0, taxed=False, goal=0):
         """ Initialize a new Account instance and save the object to the database """
@@ -133,6 +142,8 @@ class Account:
         CURSOR.execute(sql, (self.name, self.taxed,  self.goal, self.id))
         CONN.commit()
 
+
+
     def delete(self):
         """Delete the table row corresponding to the current Account instance,
         delete the dictionary entry, and reassign id attribute"""
@@ -144,6 +155,7 @@ class Account:
         CONN.commit()
         del type(self).all[self.id]
         self.id = None
+
     
 
     @classmethod
@@ -205,15 +217,25 @@ class Account:
 
 
     def transactions(self):
-        """Return list of transaction of the department"""
+        """Return list of transaction of the account"""
         from models.transaction import Transaction
         sql = """
             SELECT * FROM transactions
-            WHERE id = ?
+            WHERE account_id = ?
         """
         CURSOR.execute(sql, (self.id),)
-
         rows = CURSOR.fetchall()
         return[
             Transaction.instance_from_db(row) for row in rows
         ]
+
+
+    def update_balance(self, new_balance):
+        self.balance = new_balance
+        sql = """
+            UPDATE accounts
+            SET balance = ?
+            WHERE id = ?
+        """
+        CURSOR.execute(sql, (new_balance, self.id))
+        CONN.commit()

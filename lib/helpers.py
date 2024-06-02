@@ -144,3 +144,13 @@ def show_all_transactions():
     print(f'Showing all transactions throughout your accounts: ')
     for i, transaction in enumerate(transactions, start=1):
         print(f'{i}) {transaction.note} {transaction.action} of ${transaction.amount}')
+    
+def calculate_and_update_balance(account):
+    transactions = account.transactions()
+
+    total_deposit = sum(transaction.amount for transaction in transactions if transaction.action == "deposit")
+    total_withdrawal = sum(transaction.amount for transaction in transactions if transaction.action == "withdrawal")
+
+    total_balance = total_deposit - total_withdrawal
+    
+    account.update_balance(total_balance)
