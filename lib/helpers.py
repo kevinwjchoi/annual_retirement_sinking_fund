@@ -129,5 +129,18 @@ def update_transaction(account):
         print("Transaction not found.")
     
     
-def show_all_transactions(account):
-    ...
+def show_transactions(account):
+    transactions = Transaction.get_all()
+    filtered_transactions = [transaction for transaction in transactions if transaction.account_id == account.id]
+    print('\n')
+    print(f'Showing transactions for {account.name}')
+    for i, transaction in enumerate(filtered_transactions, start=1):
+
+        print(f'{i}) {transaction.note} {transaction.action} of ${transaction.amount} ')
+
+def show_all_transactions():
+    transactions = Transaction.get_all()
+    print('\n')
+    print(f'Showing all transactions throughout your accounts: ')
+    for i, transaction in enumerate(transactions, start=1):
+        print(f'{i}) {transaction.note} {transaction.action} of ${transaction.amount}')
