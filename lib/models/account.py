@@ -214,7 +214,16 @@ class Account:
 
         else:
             return None
-
+        
+    def update_balance(self, new_balance):
+        self.balance = new_balance
+        sql = """
+            UPDATE accounts
+            SET balance = ?
+            WHERE id = ?
+        """
+        CURSOR.execute(sql, (new_balance, self.id))
+        CONN.commit()
 
     def transactions(self):
         """Return list of transaction of the account"""
@@ -230,12 +239,3 @@ class Account:
         ]
 
 
-    def update_balance(self, new_balance):
-        self.balance = new_balance
-        sql = """
-            UPDATE accounts
-            SET balance = ?
-            WHERE id = ?
-        """
-        CURSOR.execute(sql, (new_balance, self.id))
-        CONN.commit()
