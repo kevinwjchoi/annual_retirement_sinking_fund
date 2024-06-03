@@ -232,10 +232,8 @@ class Account:
             SELECT * FROM transactions
             WHERE account_id = ?
         """
-        CURSOR.execute(sql, (self.id),)
+        CURSOR.execute(sql, (self.id,))
         rows = CURSOR.fetchall()
         return[
             Transaction.instance_from_db(row) for row in rows
         ]
-
-

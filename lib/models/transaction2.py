@@ -204,8 +204,8 @@ class Transaction:
         row = CURSOR.execute(sql, (note,)).fetchone()
         return cls.instance_from_db(row) if row else None
     
-    def update_account_balance(self):
-        from helpers import calculate_and_update_balance
-        account = Account.find_by_id(self.account_id)
-        if account:
-            calculate_and_update_balance(account)
+    # def update_account_balance(self):
+    #     from helpers import calculate_and_update_balance
+    #     account = Account.find_by_id(self.account_id)
+    #     if account:
+    #         calculate_and_update_balance(account)

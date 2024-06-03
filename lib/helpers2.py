@@ -93,7 +93,7 @@ def create_transaction(account):
         action = input("Is this a deposit or withdrawal? ")
     try:
         print("This is before i create")
-        transaction = Transaction.create(note, amount, action, account_id)
+        transaction = Transaction.create(note, amount, action, timestamp, account_id)
         print(f'You made a {transaction.action} of ${transaction.amount}.')
     except Exception as exc:
         print("Error creating transaction: ", exc)
