@@ -57,13 +57,13 @@ class Account:
             raise ValueError("Taxed must be 0 (False) or 1 (True)")
         self._taxed = int(taxed)
 
-    @property
-    def date_created(self):
-        return self._date_created
+    # @property
+    # def date_created(self):
+    #     return self._date_created
 
-    @date_created.setter
-    def date_created(self, date_created):
-        self._date_created = date_created
+    # @date_created.setter
+    # def date_created(self, date_created):
+    #     self._date_created = date_created
 
     @property
     def goal(self):

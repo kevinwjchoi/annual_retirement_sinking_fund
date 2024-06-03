@@ -92,37 +92,46 @@ def create_transaction(account):
         print("Invalid input, please enter either 'deposit' or 'withdrawal'.")
         action = input("Is this a deposit or withdrawal? ")
     try:
-        print("This is before i create")
-        transaction = Transaction.create(note, amount, action, account_id)
-        print(f'You made a {transaction.action} of ${transaction.amount}.')
+        if action.lower() == "deposit":
+            transaction = Transaction.create(note, amount, action, account_id)
+            print(f'You made a {transaction.action} of ${transaction.amount}.')
+        elif action.lower() == "withdrawal" and amount <= account.balance:
+            transaction = Transaction.create(note, amount, action, account_id)
+            print(f'You made a {transaction.action} of ${transaction.amount}.')
+        else:
+            print("Insufficient funds.")
     except Exception as exc:
         print("Error creating transaction: ", exc)
-    
+        
 def update_transaction(account):
     note = input("Enter transaction description note: ")
     transaction = Transaction.find_by_note(note)
     if transaction:
         try:
             note = input("Enter new transaction description note: ")
-            amount = input("Enter transaction amount: ")
+            amount = float(input("Enter transaction amount: "))
             valid_inputs = ["deposit", "withdrawal"]
             action = input("Is this a deposit or a withdrawal? ").lower()
-
             while action not in valid_inputs:
                 print("Invalid input, please enter either 'deposit' or 'withdrawal'.")
                 action = input("Is this a deposit or withdrawal? ")
-            
-            transaction.note = note
-            transaction.amount = amount 
-            transaction.action = action
-            transaction.account_id = account.id
-            transaction.timestamp = datetime.now().isoformat()
-            transaction.update()
-            
-            print(f'You made a {transaction.action} of ${transaction.amount}.')
-        
-        except ValueError:
-            print("Error: Amount must be a number.")
+            if action == "deposit":
+                transaction.note = note
+                transaction.amount = amount 
+                transaction.action = action
+                transaction.account_id = account.id
+                transaction.update()
+                print(f'You made a {transaction.action} of ${transaction.amount}.')
+            elif action == "withdrawal" and amount <= account.balance:
+                transaction.note = note
+                transaction.amount = amount 
+                transaction.action = action
+                transaction.account_id = account.id
+                transaction.update()
+                print(f'You made a {transaction.action} of ${transaction.amount}.')
+            else: 
+                print("Insufficient funds")
+
         
         except Exception as exc:
             print("Error updating transaction: ", exc)
@@ -153,5 +162,12 @@ def calculate_and_update_balance(account):
     total_withdrawal = sum(transaction.amount for transaction in transactions if transaction.action == "withdrawal")
 
     total_balance = total_deposit - total_withdrawal
-    
     account.update_balance(total_balance)
+
+def delete_transaction():
+    note = input("Enter transaction's note: ")
+    if transaction := Transaction.find_by_note(note): 
+        transaction.delete()
+        print(f'Transaction {note} deleted')
+    else: 
+        print(f'Transaction {note} not found')

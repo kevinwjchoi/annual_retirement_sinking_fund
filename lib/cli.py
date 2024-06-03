@@ -9,7 +9,8 @@ from helpers import (
     create_transaction,
     update_transaction,
     show_transactions,
-    show_all_transactions
+    show_all_transactions,
+    delete_transaction
     
 )
 
@@ -59,7 +60,7 @@ def handle_transaction_menu(account):
         elif choice == '3':
             update_transaction(account)
         elif choice == '4':
-            ...
+            delete_transaction()
         elif choice == '5':
             break
         else:
