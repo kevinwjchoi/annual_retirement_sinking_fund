@@ -21,7 +21,7 @@ def main():
         if choice == '1':
             handle_account_menu()
         elif choice == '2':
-            ...
+            account_examples()
         elif choice == '3':
             print("Goodbye!")
             break
@@ -77,6 +77,7 @@ def main_menu():
 def account_menu():
     print("\n")
     print("Account Menu:")
+    print("Enter a number that corresponds to the menu")
     print("1) Show all accounts")
     print("2) Select account by name search")
     print("3) Create an account")
@@ -88,11 +89,21 @@ def account_menu():
 def transaction_menu():
     print("\n")
     print("What would you like to do?")
+    print("Enter a number that corresponds to the menu")
     print("1) Show transactions")
     print("2) Create transaction")  
     print("3) Update transaction")   
     print("4) Delete transaction")   
     print("5) Back to Account Menu")   
+
+def account_examples():
+    print("\n")
+    print("---- Example Accounts ----")
+    print("Health Savings Account (HSA)")
+    print("Brokerage Account")
+    print("High Yield Savings Account")
+    print("401k")
+
 
 
 if __name__ == "__main__":
