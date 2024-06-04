@@ -23,6 +23,10 @@ Welcome to the Investment Contribution Tracker CLI app! This Python-based comman
     git clone git@github.com:kevinwjchoi/investment_contribution_tracker.git
     cd investment_contribution_tracker
 
+    python lib/debug.py
+    reset_database()
+
+
 ### Contributing
     Contributions are welcome! Please fork the repository and submit a pull request with your changes. Ensure that your code adheres to the project's coding standards and includes appropriate tests.
 
