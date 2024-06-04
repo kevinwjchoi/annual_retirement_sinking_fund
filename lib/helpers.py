@@ -47,6 +47,7 @@ def update_account():
 def delete_account():
     name = input("Enter account's name: ")
     if account := Account.find_by_name(name): 
+        delete_account_transaction(account)
         account.delete()
         print(f'Account {name} deleted')
     else: 
@@ -171,3 +172,9 @@ def delete_transaction():
         print(f'Transaction {note} deleted')
     else: 
         print(f'Transaction {note} not found')
+
+def delete_account_transaction(account):
+    transactions = Transaction.get_all()  
+    selected_transactions = [transaction for transaction in transactions if transaction.account_id == account.id] 
+    for transaction in selected_transactions:
+        transaction.delete() 
