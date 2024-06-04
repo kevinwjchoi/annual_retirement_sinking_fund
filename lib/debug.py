@@ -16,6 +16,7 @@ def reset_database():
     brokerage = Account.create("Brokerage",0.0, 1, 6000)
     transaction1 = Transaction.create("First deposit", 100.0, "deposit", 1)
 
+breakpoint()
 reset_database()
 
 
