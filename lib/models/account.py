@@ -128,12 +128,16 @@ class Account:
     @classmethod
     def create(cls, name, balance=0.0, taxed=False, goal=0):
         """ Initialize a new Account instance and save the object to the database """
+        if cls.find_by_name(name):
+            raise ValueError(f"An account with the name '{name}' already exists.")
         account = cls(None, name, balance, taxed, None, goal)
         account.save()
         return account
     
     def update(self):
         """Update the table row corresponding to the current Account instance."""
+        if self.name and self.find_by_name(self.name):
+            raise ValueError(f"An account with the name '{self.name}' already exists.")
         sql = """
             UPDATE accounts
             SET name = ?, taxed = ?,  goal = ?

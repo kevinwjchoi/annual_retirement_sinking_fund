@@ -70,6 +70,7 @@ def main_menu():
     print("\n")
     print("Welcome to the Investment Contribution Tracker CLI!")
     print("What would you like to do?")
+    print("Enter a number that corresponds to the menu below.")
     print("1) Look at your account(s)?")
     print("2) Look at examples of different types of accounts?")
     print("3) Exit")
@@ -77,7 +78,7 @@ def main_menu():
 def account_menu():
     print("\n")
     print("Account Menu:")
-    print("Enter a number that corresponds to the menu")
+    print("Enter a number that corresponds to the menu below.")    
     print("1) Show all accounts")
     print("2) Select account by name search")
     print("3) Create an account")
@@ -89,7 +90,7 @@ def account_menu():
 def transaction_menu():
     print("\n")
     print("What would you like to do?")
-    print("Enter a number that corresponds to the menu")
+    print("Enter a number that corresponds to the menu below.")
     print("1) Show transactions")
     print("2) Create transaction")  
     print("3) Update transaction")   
@@ -98,7 +99,7 @@ def transaction_menu():
 
 def account_examples():
     print("\n")
-    print("---- Example Accounts ----")
+    print("----- Example Accounts -----")
     print("Health Savings Account (HSA)")
     print("Brokerage Account")
     print("High Yield Savings Account")
